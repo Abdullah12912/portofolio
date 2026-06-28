@@ -88,6 +88,20 @@ Implementation Plan & Sprints (docs/04-implementation/)
 
 ---
 
-## 7. Next Step Reference
+---
+
+## 7. Permanent Architecture Decisions (CTO Decisions)
+
+1.  **CTO Decision #017 — Service Layer Independence:** Services must remain framework-agnostic and must not import or depend on HTTP request, response, or Express objects.
+2.  **CTO Decision #018 — Parameterized SQL Queries:** All database queries must use parameterized statements to prevent SQL injection.
+3.  **CTO Decision #024 — Slug Immutability:** Once a project, album, or article is created, its URL slug is immutable and cannot be updated.
+4.  **CTO Decision #025 — File Lifecycle:** When an upload file (e.g. project cover image) is replaced or deleted, the old file must be deleted from the filesystem immediately.
+5.  **CTO Decision #026 — Centralized Upload Cleanup:** File cleanups upon request/validation failures must reside in centralized error handler middleware, never in validators.
+6.  **CTO Decision #027 — Album Ownership:** Photos and videos are owned by a single album. Deleting an album must cascade delete its records and all physical files from disk.
+7.  **CTO Decision #028 — Service Returns Domain Data Only:** The service layer should only return domain data/results. The controller remains responsible for HTTP orchestration.
+
+---
+
+## 8. Next Step Reference
 For onboarding instructions, refer to [Codex Guide](file:///E:/PORTOFOLIO/docs/00-operations/Codex%20Guide.md).
 For team workflow guidelines, refer to [Repository Workflow](file:///E:/PORTOFOLIO/docs/00-operations/Repository%20Workflow.md).
