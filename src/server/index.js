@@ -7,6 +7,7 @@ import db from './config/db.js';
 
 import authRouter from './routes/auth.js';
 import profileRouter from './routes/profile.js';
+import projectsRouter from './routes/projects.js';
 import errorMiddleware from './middleware/error.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -29,6 +30,7 @@ app.use('/admin', express.static(path.join(__dirname, '../admin')));
 // API Routes
 app.use('/api/auth', authRouter);
 app.use('/api/profile', profileRouter);
+app.use('/api/projects', projectsRouter);
 
 // Fallback: any unmatched route serves the public index
 app.get('*', (req, res) => {
