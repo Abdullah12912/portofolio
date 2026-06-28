@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail — Rifqi Abdullah</title>
+  <meta name="description" content="Detail proyek, album, atau tulisan dari portofolio Rifqi Abdullah." />
+  <link rel="stylesheet" href="/css/index.css" />
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">Rifqi Abdullah</a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/" class="nav__link">Home</a></li>
+        <li><a href="/gallery.html" class="nav__link">Photography</a></li>
+        <li><a href="/projects.html" class="nav__link">Projects</a></li>
+        <li><a href="/writing.html" class="nav__link">Writing</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- COVER IMAGE -->
+  <div class="detail-cover">
+    <!-- Placeholder gradient cover — will be replaced with actual image -->
+    <div style="width:100%; height:100%;
+                background: linear-gradient(135deg,
+                  hsl(220, 25%, 10%) 0%,
+                  hsl(240, 20%, 7%) 50%,
+                  hsl(220, 30%, 12%) 100%);">
+    </div>
+    <div class="detail-cover__overlay"></div>
+    <div class="detail-cover__content">
+      <div class="container">
+        <a href="javascript:history.back()" class="page-header__back">
+          ← Kembali
+        </a>
+        <div style="margin-bottom:var(--space-3);">
+          <span class="card__badge" id="detail-badge">Software</span>
+        </div>
+        <h1 class="heading-xl" id="detail-title" style="color:var(--color-text-primary); max-width:680px;">
+          Website Portofolio Pribadi
+        </h1>
+        <div class="flex gap-4" style="margin-top:var(--space-4); color:var(--color-text-muted); font-size:var(--fs-sm);">
+          <span id="detail-meta-location">📍 Yogyakarta</span>
+          <span>·</span>
+          <span id="detail-meta-date">Juni 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <main class="detail-content">
+    <div class="container">
+      <div style="display:grid; grid-template-columns: 1fr 280px; gap:var(--space-16); align-items:start;">
+
+        <!-- Main Content -->
+        <div>
+          <div class="prose" id="detail-content">
+            <p>
+              Proyek ini merupakan pengembangan website portofolio pribadi yang menampilkan perjalanan saya sebagai mahasiswa — mencakup pencapaian akademis, karya visual, proyek yang dikerjakan, dan catatan tertulis.
+            </p>
+
+            <h2>Latar Belakang</h2>
+            <p>
+              Sebagai mahasiswa yang aktif di berbagai bidang, saya merasa perlu untuk memiliki satu ruang digital yang merepresentasikan siapa saya secara utuh. Bukan sekadar CV online, tetapi sebuah arsip karya yang dapat berkembang seiring waktu.
+            </p>
+
+            <h2>Tantangan</h2>
+            <p>
+              Tantangan utama adalah menjaga kesederhanaan tampilan sambil tetap memuat banyak jenis konten yang berbeda — mulai dari foto besar, artikel panjang, hingga metadata proyek teknis. Desain harus bisa melayani semua kebutuhan itu tanpa merasa penuh sesak.
+            </p>
+
+            <h2>Proses</h2>
+            <p>
+              Dimulai dengan mendokumentasikan visi produk secara menyeluruh sebelum satu baris kode ditulis. Arsitektur dirancang sederhana: satu server Node.js/Express, satu database PostgreSQL, dan frontend Vanilla HTML/CSS/JS. Tidak ada build step, tidak ada framework yang kompleks.
+            </p>
+
+            <p>
+              Fokus utama adalah pada tipografi, whitespace, dan pemilihan warna yang memberikan kesan premium tanpa ornamen berlebihan.
+            </p>
+          </div>
+
+          <!-- Optional Photo Gallery -->
+          <div id="photo-gallery-section" style="margin-top:var(--space-12);">
+            <h2 class="heading-md" style="margin-bottom:var(--space-6); color:var(--color-text-primary);">Dokumentasi</h2>
+            <div class="photo-grid" id="photo-grid">
+              <!-- Photo placeholders (will be actual images when API-connected) -->
+              <div class="photo-grid__item" onclick="openLightbox(0)">
+                <div style="width:100%; height:100%; background:var(--color-surface-raised);
+                            display:flex; align-items:center; justify-content:center;
+                            color:var(--color-text-muted); font-size:var(--fs-xl);">🖼️</div>
+              </div>
+              <div class="photo-grid__item" onclick="openLightbox(1)">
+                <div style="width:100%; height:100%; background:var(--color-surface);
+                            display:flex; align-items:center; justify-content:center;
+                            color:var(--color-text-muted); font-size:var(--fs-xl);">🖼️</div>
+              </div>
+              <div class="photo-grid__item" onclick="openLightbox(2)">
+                <div style="width:100%; height:100%; background:var(--color-surface-raised);
+                            display:flex; align-items:center; justify-content:center;
+                            color:var(--color-text-muted); font-size:var(--fs-xl);">🖼️</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Optional External Links -->
+          <div id="external-links-section" style="margin-top:var(--space-10);">
+            <div class="external-links">
+              <a href="#" class="btn btn--outline" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub Repository
+              </a>
+              <a href="#" class="btn btn--outline" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Live Demo
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside style="position:sticky; top:calc(var(--nav-height) + var(--space-8));">
+          <div style="background:var(--color-surface); border:1px solid var(--color-border);
+                      border-radius:var(--radius-lg); padding:var(--space-6);">
+            <div style="font-size:var(--fs-xs); color:var(--color-text-muted);
+                        letter-spacing:var(--ls-wider); text-transform:uppercase;
+                        margin-bottom:var(--space-4);">Detail Proyek</div>
+
+            <div style="display:flex; flex-direction:column; gap:var(--space-5);">
+              <div>
+                <div class="text-xs text-dim" style="margin-bottom:var(--space-1);">Tipe</div>
+                <div class="text-sm" style="font-weight:var(--fw-medium);" id="sidebar-type">Software</div>
+              </div>
+              <div style="height:1px; background:var(--color-border);"></div>
+              <div>
+                <div class="text-xs text-dim" style="margin-bottom:var(--space-1);">Tahun</div>
+                <div class="text-sm" style="font-weight:var(--fw-medium);" id="sidebar-year">2026</div>
+              </div>
+              <div style="height:1px; background:var(--color-border);"></div>
+              <div>
+                <div class="text-xs text-dim" style="margin-bottom:var(--space-4);">Bagikan</div>
+                <button onclick="navigator.clipboard.writeText(window.location.href)"
+                        class="btn btn--outline" style="width:100%; justify-content:center;">
+                  Salin Link
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox__close" id="lightbox-close" aria-label="Tutup">✕</button>
+    <button class="lightbox__nav lightbox__prev" id="lightbox-prev" aria-label="Foto sebelumnya">‹</button>
+    <img class="lightbox__media" id="lightbox-img" src="" alt="" />
+    <button class="lightbox__nav lightbox__next" id="lightbox-next" aria-label="Foto berikutnya">›</button>
+    <p class="lightbox__caption" id="lightbox-caption"></p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <p class="footer__copy">© 2026 Rifqi Abdullah</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

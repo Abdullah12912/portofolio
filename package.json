@@ -2,6 +2,7 @@
   "name": "portofolio",
   "version": "1.0.0",
   "description": "Personal portfolio website and private CMS for Rifqi Abdullah",
+  "type": "module",
   "main": "src/server/index.js",
   "scripts": {
     "start": "node src/server/index.js",

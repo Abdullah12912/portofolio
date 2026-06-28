@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photography & Videography — Rifqi Abdullah</title>
+  <meta name="description" content="Dokumentasi karya visual Rifqi Abdullah — album fotografi tematik, cerita di balik gambar, dan karya videografi." />
+  <link rel="stylesheet" href="/css/index.css" />
+  <style>
+    /* Gallery-specific masonry-like layout */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+
+    .gallery-grid .album-card:nth-child(3n+1) { aspect-ratio: 3/4; }
+    .gallery-grid .album-card:nth-child(3n+2) { aspect-ratio: 1/1; }
+    .gallery-grid .album-card:nth-child(3n+3) { aspect-ratio: 4/3; }
+
+    @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-grid .album-card { aspect-ratio: 4/3 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">Rifqi Abdullah</a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/" class="nav__link">Home</a></li>
+        <li><a href="/gallery.html" class="nav__link active">Photography</a></li>
+        <li><a href="/projects.html" class="nav__link">Projects</a></li>
+        <li><a href="/writing.html" class="nav__link">Writing</a></li>
+      </ul>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <span class="section-header__label">Photography & Videography</span>
+      <h1 class="heading-xl" style="margin-top:var(--space-3); margin-bottom:var(--space-4);">Karya Visual</h1>
+      <p class="text-muted" style="max-width:520px;">
+        Setiap album menyimpan cerita — tentang tempat, waktu, cahaya, dan manusia di balik setiap bidikan.
+      </p>
+    </div>
+  </div>
+
+  <!-- ALBUMS GRID -->
+  <main class="container section--sm">
+    <div class="gallery-grid" id="gallery-grid">
+
+      <!-- Album 1 -->
+      <a href="/detail.html?type=album" class="album-card reveal"
+         style="background: linear-gradient(135deg, hsl(30,20%,12%), hsl(30,15%,8%));">
+        <div class="album-card__overlay">
+          <div class="album-card__meta">
+            <span>📍 Pasar Sleman, Yogyakarta</span>
+            <span>·</span>
+            <span>Juni 2026</span>
+          </div>
+          <h2 class="album-card__title">Kemanusiaan di Ujung Senja</h2>
+          <p class="album-card__story">Potret kehidupan pedagang di pasar tradisional saat cahaya sore merayap masuk dan memancarkan kehangatan.</p>
+        </div>
+      </a>
+
+      <!-- Album 2 -->
+      <a href="/detail.html?type=album" class="album-card reveal"
+         style="background: linear-gradient(135deg, hsl(220,25%,12%), hsl(220,20%,7%));">
+        <div class="album-card__overlay">
+          <div class="album-card__meta">
+            <span>📍 Kota Lama, Semarang</span>
+            <span>·</span>
+            <span>April 2026</span>
+          </div>
+          <h2 class="album-card__title">Kota yang Tidak Tidur</h2>
+          <p class="album-card__story">Seri foto jalanan kota Semarang di tengah malam — cahaya neon, bayangan panjang, dan kehidupan yang terus berputar.</p>
+        </div>
+      </a>
+
+      <!-- Album 3 -->
+      <a href="/detail.html?type=album" class="album-card reveal"
+         style="background: linear-gradient(135deg, hsl(200,30%,12%), hsl(200,20%,7%));">
+        <div class="album-card__overlay">
+          <div class="album-card__meta">
+            <span>📍 Gunung Prau, Wonosobo</span>
+            <span>·</span>
+            <span>Maret 2026</span>
+          </div>
+          <h2 class="album-card__title">Di Atas Awan</h2>
+          <p class="album-card__story">Perjalanan mendaki sebelum fajar hingga lautan awan membentang di pagi hari — ketenangan yang tidak bisa dijelaskan dengan kata.</p>
+        </div>
+      </a>
+
+      <!-- Album 4 — Video -->
+      <a href="/detail.html?type=album" class="album-card reveal"
+         style="background: linear-gradient(135deg, hsl(280,20%,12%), hsl(280,15%,8%));">
+        <div style="position:absolute; top:var(--space-4); right:var(--space-4);
+                    background:rgba(255,255,255,0.1); backdrop-filter:blur(8px);
+                    border:1px solid rgba(255,255,255,0.15); border-radius:var(--radius-full);
+                    padding:4px 12px; font-size:11px; color:rgba(255,255,255,0.8);
+                    letter-spacing:0.08em; z-index:1;">
+          ▶ VIDEO
+        </div>
+        <div class="album-card__overlay">
+          <div class="album-card__meta">
+            <span>📍 Yogyakarta</span>
+            <span>·</span>
+            <span>Februari 2026</span>
+          </div>
+          <h2 class="album-card__title">Ruang Antara</h2>
+          <p class="album-card__story">Short documentary tentang mahasiswa rantau — bagaimana mereka menciptakan rumah di kota orang.</p>
+        </div>
+      </a>
+
+      <!-- Album 5 -->
+      <a href="/detail.html?type=album" class="album-card reveal"
+         style="background: linear-gradient(135deg, hsl(10,25%,12%), hsl(10,18%,8%));">
+        <div class="album-card__overlay">
+          <div class="album-card__meta">
+            <span>📍 Pantai Parangtritis</span>
+            <span>·</span>
+            <span>Januari 2026</span>
+          </div>
+          <h2 class="album-card__title">Garis Cakrawala</h2>
+          <p class="album-card__story">Seri foto golden hour di tepi samudra — di mana langit dan laut saling berbagi warna.</p>
+        </div>
+      </a>
+
+      <!-- Album 6 -->
+      <a href="/detail.html?type=album" class="album-card reveal"
+         style="background: linear-gradient(135deg, hsl(160,20%,10%), hsl(160,15%,7%));">
+        <div class="album-card__overlay">
+          <div class="album-card__meta">
+            <span>📍 Candi Borobudur</span>
+            <span>·</span>
+            <span>Desember 2025</span>
+          </div>
+          <h2 class="album-card__title">Diam yang Berbicara</h2>
+          <p class="album-card__story">Arsitektur dan bayangan di pagi hari buta — ketika kompleks candi belum ramai dan waktu terasa lebih pelan.</p>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <p class="footer__copy">© 2026 Rifqi Abdullah</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
