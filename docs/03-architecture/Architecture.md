@@ -72,25 +72,28 @@ PORTOFOLIO/
 
 ---
 
-## 4. Authentication & Security
+## 4. Single Admin CMS Security Constraints
 
-Karena sistem ini hanya digunakan oleh satu orang (**Single-user Admin / Rifqi Abdullah**), kita tidak memerlukan role management atau ACL yang rumit.
+Sistem ini dirancang secara eksklusif untuk satu orang administrator (**Single-user Admin / Rifqi Abdullah**). Demi mempertahankan ruang lingkup proyek yang ramping (MVP) dan mencegah kerentanan keamanan yang tidak perlu:
+* **No User Registration**: Tidak ada halaman pendaftaran akun. Akun admin tunggal di-seeding langsung melalui skrip inisialisasi database.
+* **No Password Reset**: Tidak ada fitur pemulihan kata sandi, kirim email reset, atau integrasi server SMTP.
+* **No User Management**: Tidak ada fitur tambah/edit/hapus pengguna lain ataupun pembagian peran (*role management*). Hanya ada satu akun admin tunggal yang memiliki akses penuh ke CMS.
 
-* **Metode Autentikasi**: **Session-based Cookies** atau **JSON Web Token (JWT) disimpan di HttpOnly Cookie**.
-  * *Pilihan Rekomendasi*: JWT disimpan dalam cookie `HttpOnly` dan `Secure` untuk mencegah serangan XSS.
-* **Proses Login**:
-  1. Admin mengirimkan POST ke `/api/auth/login` dengan username dan password.
-  2. Server memvalidasi kredensial dengan password hash di database (`bcrypt`).
-  3. Jika valid, server menerbitkan JWT token dan menyimpannya di cookie client dengan flag `HttpOnly; Secure; SameSite=Strict`.
-* **Proteksi Route Admin**:
-  * Semua endpoint API mutatif (POST, PUT, DELETE) di bawah `/api/` dilindungi oleh middleware `authMiddleware` yang memverifikasi JWT dari cookie.
-  * Halaman `/admin/` akan mengalihkan pengguna ke `/admin/login` jika cookie JWT tidak terdeteksi atau tidak valid.
+### Mekanisme Autentikasi JWT:
+1. Admin mengirimkan POST ke `/api/auth/login` dengan username dan password.
+2. Server memvalidasi kredensial dengan password hash di database (`bcrypt`).
+3. Jika valid, server menerbitkan JWT token dan menyimpannya di cookie client dengan flag `HttpOnly; Secure; SameSite=Strict; Path=/`.
+4. Semua endpoint API mutatif (POST, PUT, DELETE) di bawah `/api/` dilindungi oleh middleware `authMiddleware` yang memverifikasi JWT dari cookie.
 
 ---
 
 ## 5. File & Media Upload Mechanics
 
 Mengingat prinsip **Image First** dan **Simple Admin**:
-* **Penyimpanan Media**: Selama masa pengembangan (Sprint 1-2), gambar akan diunggah dan disimpan langsung di sistem berkas lokal server (`src/public/uploads/`).
-* **Optimasi Gambar**: Upload dibatasi maksimal 5MB per file. Server akan menolak format non-gambar (hanya menerima JPEG, PNG, WEBP).
-* **Integrasi Database**: Server akan menyimpan path lokal file yang diunggah (misal: `/uploads/album-name/image.jpg`) ke dalam tabel PostgreSQL.
+* **Penyimpanan Media**: Selama masa pengembangan (Sprint 1-2), gambar akan diunggah dan disimpan langsung di sistem berkas lokal server di bawah folder `/src/public/uploads/`.
+* **Struktur Folder Unggahan**:
+  * `/src/public/uploads/profiles/` - Untuk file PDF Resume/CV dan gambar profil.
+  * `/src/public/uploads/projects/` - Untuk file gambar sampul (cover) dan galeri proyek.
+  * `/src/public/uploads/albums/` - Untuk file gambar sampul album dan file media (foto/video thumbnail) di dalam album.
+* **Optimasi Gambar**: Upload dibatasi maksimal 5MB per file. Server akan menolak format non-gambar (hanya menerima JPEG, PNG, WEBP, dan PDF khusus untuk resume).
+* **Integrasi Database**: Server akan menyimpan path lokal file yang diunggah (misal: `/uploads/projects/project-cover.jpg`) ke dalam tabel database PostgreSQL.

@@ -43,18 +43,32 @@ Website ini menggunakan pendekatan **Dark Mode** sebagai bawaan utama (*default*
 
 ---
 
-## 2. Typography
+## 2. Typography Strategy
 
-Menggunakan Google Fonts **Outfit** untuk heading (modern, minimalis) dan **Inter** untuk body text (keterbacaan tinggi).
+Untuk menjaga fleksibilitas pada fase awal proyek, pemilihan jenis huruf (*font families*) tidak dibekukan terlebih dahulu. Font akan disesuaikan dan difinalisasi selama implementasi antarmuka (UI design). Strategi tipografi didefinisikan sebagai berikut:
 
-* **Heading Font Family**: `'Outfit', sans-serif;`
-* **Body Font Family**: `'Inter', sans-serif;`
+* **Header Font Style (Display / Headings)**:
+  * Karakteristik: Geometris, modern, tegas, dengan keterbacaan yang kuat untuk display besar.
+  * Kandidat: *Outfit*, *Montserrat*, *Syne*, atau *sans-serif* sistem modern.
+  * CSS Custom Property: `--font-display`
+* **Body Font Style (Reading Content / Paragraphs)**:
+  * Karakteristik: Humanis atau neo-grotesque, netral, memiliki spasi proporsional (*letter-spacing*), optimal untuk pembacaan lama (*long-form reading*).
+  * Kandidat: *Inter*, *Roboto*, *Plus Jakarta Sans*, atau *sans-serif* netral.
+  * CSS Custom Property: `--font-body`
+
+```css
+:root {
+  /* Diinisialisasi dengan system fonts, akan digantikan dengan web fonts terpilih saat UI design */
+  --font-display: system-ui, -apple-system, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+```
 
 ### Font Size & Weight Scale
 
 | Token | Size (rem) | Size (px) | Weight | Line Height | Usage |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `--fs-xs` | `0.75rem` | 12px | 400 | 1.4 | Meta tags, timestamps |
+| `--fs-xs` | `0.75rem` | 12px | 400 | 1.4 | Meta tags, timestamps, lokasi |
 | `--fs-sm` | `0.875rem` | 14px | 400 / 500 | 1.5 | Subtitles, button text, side notes |
 | `--fs-base` | `1.0rem` | 16px | 400 | 1.6 | Body text, paragraph |
 | `--fs-lg` | `1.25rem` | 20px | 500 / 600 | 1.5 | Small headings, card titles |

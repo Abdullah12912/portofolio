@@ -8,8 +8,8 @@ Dokumen ini mendefinisikan alur pengguna (*User Flow*) untuk dua aktor utama:
 
 ## 1. Public User Flow
 
-### A. Alur Menjelajahi Profil Akademik & Aktivitas (Untuk Dosen & Rekruter)
-Tujuan: Menilai kualifikasi akademis, organisasi, dan keahlian Rifqi.
+### A. Alur Menjelajahi Profil & Aktivitas
+Tujuan: Menilai identitas diri, pencapaian terbaru, riwayat aktivitas, dan kompetensi Rifqi.
 
 ```mermaid
 sequenceDiagram
@@ -19,17 +19,17 @@ sequenceDiagram
     
     User->>Home: Membuka website
     Home-->>User: Menampilkan Hero (Bio, Status Saat Ini)
-    User->>Home: Menjelajah ke section Akademik/Organisasi/Pencapaian
-    Home-->>User: Menampilkan daftar kompetensi & riwayat organisasi
+    User->>Home: Menjelajah ke section Achievements (Milestones) & Activities (Timeline)
+    Home-->>User: Menampilkan daftar pencapaian & rentetan aktivitas
     User->>Home: Klik "Unduh CV / Resume"
     Home-->>User: File CV terunduh (PDF)
     User->>Home: Klik "Lihat Semua Proyek"
     Home->>Projects: Mengalihkan ke halaman Proyek
-    Projects-->>User: Menampilkan filter & daftar proyek lengkap
+    Projects-->>User: Menampilkan filter tipe proyek & daftar proyek
 ```
 
-### B. Alur Mengapresiasi Karya Visual & Cerita (Untuk Mitra & Teman)
-Tujuan: Menikmati dokumentasi karya fotografi/videografi beserta proses kreatif di belakangnya.
+### B. Alur Mengapresiasi Karya Visual & Cerita (Photography/Videography)
+Tujuan: Menikmati dokumentasi karya fotografi/videografi beserta konsep cerita, lokasi, dan tanggal di belakangnya.
 
 ```mermaid
 sequenceDiagram
@@ -39,10 +39,10 @@ sequenceDiagram
     
     User->>Gallery: Membuka menu Photography/Videography
     Gallery-->>User: Menampilkan Grid Album dengan foto sampul yang besar
-    User->>Gallery: Klik salah satu Album Foto
+    User->>Gallery: Klik salah satu Album Foto/Video
     Gallery->>Album: Mengalihkan ke detail Album
-    Album-->>User: Menampilkan cerita dibalik karya (Story) & galeri foto
-    User->>Album: Klik salah satu foto
+    Album-->>User: Menampilkan Metadata (Lokasi, Tanggal), Story, & Grid Media (Photos/Videos)
+    User->>Album: Klik salah satu file foto
     Album-->>User: Membuka Lightbox Viewer (Foto layar penuh, navigasi geser)
 ```
 
@@ -50,8 +50,8 @@ sequenceDiagram
 
 ## 2. Admin Flow (Rifqi as CMS User)
 
-### A. Alur Awal: Login & Masuk Workspace
-Tujuan: Masuk ke dalam CMS secara aman.
+### A. Alur Awal: Login & Masuk Workspace (Single Admin CMS)
+Tujuan: Masuk ke dalam CMS secara aman tanpa adanya registrasi atau lupa password.
 
 ```mermaid
 graph TD
@@ -63,37 +63,37 @@ graph TD
     RedirectDashboard --> End([Selesai])
 ```
 
-### B. Alur Mengunggah Karya Baru (Photography/Videography)
-Tujuan: Mengunggah album foto tematik dengan cerita di baliknya.
+### B. Alur Mengelola Album Baru (Albums, Photos, Videos)
+Tujuan: Mengunggah album baru dengan metadata (lokasi, tanggal, cover) dan menambahkan foto/video ke dalamnya.
 
 ```mermaid
 graph TD
-    Start([Mulai di Halaman /admin]) --> ClickAddMedia[Klik "Unggah Karya Baru"]
-    ClickAddMedia --> OpenForm[Buka Form Upload Media]
-    OpenForm --> InputData[Masukkan Judul Album, Deskripsi Cerita, Kategori]
-    InputData --> UploadImages[Upload File Foto Utama & File Pendukung]
-    UploadImages --> SelectStatus{Pilih Status Publikasi}
+    Start([Mulai di Halaman /admin]) --> ClickAddAlbum[Klik "Buat Album Baru"]
+    ClickAddAlbum --> OpenForm[Buka Form Album]
+    OpenForm --> InputData[Masukkan Judul, Lokasi, Tanggal, Story]
+    InputData --> UploadCover[Upload File Sampul Album]
+    UploadCover --> SelectStatus{Pilih Status}
     SelectStatus -- Draf --> SaveDraft[Simpan sebagai Draf]
-    SelectStatus -- Publish --> SavePublish[Simpan & Publikasikan]
-    SaveDraft --> DBSave[(Simpan ke Database)]
+    SelectStatus -- Publish --> SavePublish[Simpan & Terbitkan]
+    SaveDraft --> DBSave[(Simpan ke Tabel albums)]
     SavePublish --> DBSave
-    DBSave --> RedirectList[Kembali ke Daftar Media & Tampilkan Notifikasi Sukses]
-    RedirectList --> End([Selesai])
+    DBSave --> OpenAlbumDetail[Buka Halaman Detail Album di CMS]
+    OpenAlbumDetail --> ClickUploadMedia[Klik "Unggah Media Foto/Video"]
+    ClickUploadMedia --> UploadMediaFiles[Upload File Foto/Video ke album_photos / album_videos]
+    UploadMediaFiles --> End([Selesai])
 ```
 
-### C. Alur Menulis Artikel Baru (Writing)
-Tujuan: Membuat draf tulisan, mengedit, dan menerbitkannya.
+### C. Alur Mengunggah Proyek Baru
+Tujuan: Menambah proyek baru (Web, Riset, Event, dll) dengan opsi galeri pendukung dan tautan luar.
 
 ```mermaid
 graph TD
-    Start([Mulai di Halaman /admin]) --> ClickWrite[Klik "Tulis Artikel Baru"]
-    ClickWrite --> OpenEditor[Buka Editor Artikel]
-    OpenEditor --> WriteContent[Tulis Judul & Konten dengan Markdown/Rich Text]
-    WriteContent --> SetSlug[Tentukan Slug URL & Kategori]
-    SetSlug --> SetStatus{Tentukan Status}
-    SetStatus -- Simpan Draf --> SaveDraft[Simpan ke DB dengan status Draft]
-    SetStatus -- Terbitkan --> SavePublish[Simpan ke DB dengan status Published]
-    SaveDraft --> RedirectList[Kembali ke Daftar Tulisan]
-    SavePublish --> RedirectList
-    RedirectList --> End([Selesai])
+    Start([Mulai di Halaman /admin]) --> ClickAddProject[Klik "Tambah Proyek Baru"]
+    ClickAddProject --> OpenFormProject[Buka Form Proyek]
+    OpenFormProject --> InputDetails[Masukkan Judul, Tipe Proyek, Deskripsi, Markdown Content]
+    InputDetails --> UploadCover[Upload Cover Gambar]
+    UploadCover --> AddGallery[Unggah Foto Galeri Pendukung - Opsional]
+    AddGallery --> AddLinks[Masukkan Tautan Demo/Github - Opsional]
+    AddLinks --> SaveProject[(Simpan ke Tabel projects)]
+    SaveProject --> End([Selesai])
 ```

@@ -5,21 +5,21 @@ Peta situs (*Sitemap*) ini mendefinisikan seluruh halaman yang ada pada **Public
 ```mermaid
 graph TD
     %% Public Website Pages
-    SubPublic[Public Website] --> Home[Home / Student Info]
+    SubPublic[Public Website] --> Home[Home / Profile & Current]
     SubPublic --> Photography[Photography & Videography]
     SubPublic --> Projects[Projects Showcase]
     SubPublic --> Writing[Writing / Articles]
     
-    Photography --> AlbumDetail[Album / Video Detail Page]
+    Photography --> AlbumDetail[Album Detail Page]
     Projects --> ProjectDetail[Project Detail Page]
     Writing --> ArticleDetail[Article Read Page]
     
     %% Admin Dashboard Pages
     SubAdmin[Admin Dashboard] --> Login[Auth / Login Page]
     SubAdmin --> DashboardHome[Dashboard Home / Creator Workspace]
-    SubAdmin --> AdminStudent[Manage Student Info]
+    SubAdmin --> AdminProfile[Manage Profile & Current]
     SubAdmin --> AdminProjects[Manage Projects CRUD]
-    SubAdmin --> AdminMedia[Manage Media CRUD]
+    SubAdmin --> AdminMedia[Manage Albums, Photos, Videos CRUD]
     SubAdmin --> AdminWriting[Manage Articles CRUD]
 ```
 
@@ -29,29 +29,28 @@ graph TD
 
 Halaman-halaman yang dapat diakses oleh publik secara bebas:
 
-### A. Home (Student Info) - `/`
-Halaman utama yang memperkenalkan identitas Rifqi sebagai mahasiswa.
-* **Hero Section**: Tagline, biografi singkat, dan status saat ini (sedang mengerjakan apa).
-* **Highlighted Section**: Cuplikan proyek terbaru, foto terbaru, dan artikel terbaru.
-* **Competence & Organization**: Daftar keahlian akademis/non-akademis, riwayat organisasi, pencapaian kompetisi.
-* **Contact & Links**: Link media sosial, email, dan unduh Resume/CV.
+### A. Home (Profile & Current) - `/`
+Halaman utama yang memperkenalkan identitas Rifqi.
+* **Hero Section**: Tagline, biografi singkat, dan status saat ini (Current).
+* **Current & Highlighted Section**: Cuplikan proyek terbaru, foto terbaru, dan artikel terbaru.
+* **Achievements & Activities**: Timeline aktivitas singkat dan riwayat pencapaian.
+* **Contact & Links**: Link media sosial, email, dan Resume/CV.
 
 ### B. Photography & Videography - `/gallery`
 Dokumentasi karya visual.
 * **Gallery Grid**: Daftar album foto tematik dan video.
-* **Behind the Scenes**: Cuplikan cerita atau catatan kecil tentang pembuatan karya.
 * **Album Detail - `/gallery/:album-slug`**:
-  * Judul album, deskripsi konsep/cerita.
+  * Judul album, lokasi, tanggal, deskripsi cerita konsep (*Story* - first class).
   * Tampilan foto-foto besar dengan lightbox viewer.
   * Tautan video (jika berupa video).
 
 ### C. Projects - `/projects`
-Daftar seluruh proyek (coding, riset, proposal, event, video dokumenter).
-* **Project Filter & Grid**: Filter berdasarkan tipe (Web, Research, Event, Video, dsb).
+Daftar seluruh proyek (coding, riset, proposal, event, dll).
+* **Project Filter & Grid**: Filter berdasarkan tipe (Software, Research, Academic, Photography, Video, Creative, Other).
 * **Project Detail - `/projects/:project-slug`**:
   * Deskripsi mendalam, tantangan, solusi, dan cerita pembuatan.
-  * Media pendukung (foto pameran, diagram arsitektur, proposal PDF, atau video).
-  * Tautan eksternal (GitHub, Demo Live, Laporan Penelitian).
+  * Media pendukung opsional (foto pameran, diagram arsitektur, proposal PDF, atau video).
+  * Tautan eksternal opsional (GitHub, Demo Live, Laporan Penelitian).
 
 ### D. Writing - `/writing`
 Catatan, refleksi, dan artikel.
@@ -71,17 +70,18 @@ Halaman terbatas untuk pengelolaan konten (CMS) oleh Rifqi:
 ### B. Workspace Home (Dashboard) - `/admin`
 * Halaman utama admin yang berfokus pada aksi cepat: tombol "Unggah Karya Foto", "Tulis Artikel", "Tambah Proyek Baru", dan daftar draf konten yang sedang dikerjakan.
 
-### C. Manage Student Info - `/admin/profile`
-* Formulir untuk memperbarui status saat ini, teks biografi hero, daftar organisasi, kompetensi, dan file CV/Resume.
+### C. Manage Profile - `/admin/profile`
+* Formulir untuk memperbarui status saat ini, teks biografi hero, daftar kompetensi, daftar pencapaian, dan file CV/Resume.
 
 ### D. Manage Projects - `/admin/projects`
 * Daftar semua proyek.
-* Form Tambah/Edit Proyek (Judul, Tipe, Deskripsi, Cover Image, Galeri Proyek, Status: Draf/Publish).
+* Form Tambah/Edit Proyek (Judul, Tipe, Deskripsi, Cover Image, Galeri Proyek [opsional], Tautan Eksternal [opsional], Status: Draf/Publish).
 * Hapus Proyek.
 
-### E. Manage Media - `/admin/gallery`
+### E. Manage Albums - `/admin/albums`
 * Daftar album foto dan video.
-* Form Tambah/Edit Album (Judul, Cerita/Deskripsi, Upload Foto, Tautan Video Youtube/Vimeo, Status: Draf/Publish).
+* Form Tambah/Edit Album (Judul, Lokasi, Tanggal, Cerita/Deskripsi, Upload Cover, Status: Draf/Publish).
+* Upload & Manage Photos/Videos untuk album tersebut (Drag & drop upload file gambar/video).
 * Hapus Album.
 
 ### F. Manage Writing - `/admin/writing`

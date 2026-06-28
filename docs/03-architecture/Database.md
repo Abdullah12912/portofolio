@@ -6,28 +6,36 @@ Dokumen ini mendefinisikan skema database PostgreSQL, tipe data, relasi antar ta
 
 ## 1. Entity Relationship Diagram (ERD)
 
-Skema database ini sangat sederhana dan dinormalisasi untuk mendukung kebutuhan konten tanpa kompleksitas berlebih.
+Skema database ini menggunakan relasi eksplisit untuk membagi kepemilikan dan mempermudah query.
 
 ```
-  ┌───────────────┐
-  │    admins     │
-  └───────────────┘
-  
-  ┌───────────────┐
-  │ student_info  │
-  └───────────────┘
-  
-  ┌───────────────┐            ┌────────────────┐
-  │  media_albums │ 1 ─── 0..* │  media_items   │
-  └───────────────┘            └────────────────┘
-  
-  ┌───────────────┐
-  │   projects    │
-  └───────────────┘
-  
-  ┌───────────────┐
-  │   articles    │
-  └───────────────┘
+       ┌──────────┐
+       │  admins  │
+       └──────────┘
+       
+       ┌──────────┐
+       │  profile │
+       └─────┬────┘
+             │
+     ┌───────┴───────┐
+     ▼               ▼
+┌──────────────┐┌──────────────┐
+│ achievements ││  activities  │
+└──────────────┘└──────────────┘
+
+┌──────────────┐       ┌──────────────┐
+│   projects   │       │   articles   │
+└──────────────┘       └──────────────┘
+
+┌──────────────┐
+│    albums    │
+└──────┬───────┘
+       │
+     ┌─┴─────────────┐
+     ▼               ▼
+┌──────────────┐┌──────────────┐
+│ album_photos ││ album_videos │
+└──────────────┘└──────────────┘
 ```
 
 ---
@@ -46,73 +54,122 @@ CREATE TABLE admins (
 );
 ```
 
-### B. Student Info Table (`student_info`)
-Menyimpan data identitas pribadi Rifqi sebagai mahasiswa. Hanya akan ada 1 baris (*row*) data di tabel ini.
+### B. Profile Table (`profile`)
+Menyimpan data identitas pribadi Rifqi. Hanya akan berisi 1 baris (*row*) data di tabel ini.
 ```sql
-CREATE TABLE student_info (
+CREATE TABLE profile (
     id SERIAL PRIMARY KEY,
     fullname VARCHAR(100) NOT NULL,
     bio TEXT NOT NULL,
-    current_activity TEXT NOT NULL, -- Sedang mengerjakan apa
+    current_activity TEXT NOT NULL, -- Status saat ini (Current)
     cv_url VARCHAR(255),            -- Tautan file PDF CV
     competencies TEXT[],            -- Array keahlian (e.g. {'Photography', 'Web Dev'})
-    organizations JSONB,            -- Struktur JSON untuk riwayat organisasi
-    achievements JSONB,             -- Struktur JSON untuk pencapaian & kompetisi
     social_links JSONB,             -- Tautan media sosial
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
-### C. Projects Table (`projects`)
-Menyimpan semua jenis proyek (Web, Riset, Proposal, Event, Video Dokumenter).
+### C. Achievements Table (`achievements`)
+Menyimpan pencapaian penting (*milestones*) yang terikat pada profil.
 ```sql
-CREATE TABLE projects (
+CREATE TABLE achievements (
     id SERIAL PRIMARY KEY,
+    profile_id INT REFERENCES profile(id) ON DELETE CASCADE,
     title VARCHAR(150) NOT NULL,
-    slug VARCHAR(150) UNIQUE NOT NULL,
-    category VARCHAR(50) NOT NULL, -- 'Web', 'Research', 'Event', 'Video', etc.
-    description TEXT NOT NULL,     -- Deskripsi singkat kartu
-    content TEXT NOT NULL,         -- Cerita detail (format markdown)
-    cover_image VARCHAR(255),      -- Path file cover image
-    gallery_images TEXT[],         -- Array path file gambar pendukung
-    external_links JSONB,          -- Link GitHub, demo live, dll.
-    status VARCHAR(20) DEFAULT 'draft', -- 'draft' atau 'published'
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-### D. Media Albums Table (`media_albums`)
-Menampung album tematik untuk fotografi & videography.
-```sql
-CREATE TABLE media_albums (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(150) NOT NULL,
-    slug VARCHAR(150) UNIQUE NOT NULL,
-    description TEXT,              -- Cerita di balik album (Behind the Scene)
-    cover_image VARCHAR(255),      -- Sampul album
-    type VARCHAR(20) DEFAULT 'photo', -- 'photo' atau 'video'
-    status VARCHAR(20) DEFAULT 'draft', -- 'draft' atau 'published'
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-### E. Media Items Table (`media_items`)
-Menyimpan foto atau video spesifik di dalam suatu album.
-```sql
-CREATE TABLE media_items (
-    id SERIAL PRIMARY KEY,
-    album_id INT REFERENCES media_albums(id) ON DELETE CASCADE,
-    file_url VARCHAR(255) NOT NULL, -- Path file lokal atau URL cloud
-    caption TEXT,                  -- Deskripsi singkat foto
-    video_url VARCHAR(255),        -- Link youtube/vimeo (jika type video)
-    sort_order INT DEFAULT 0,      -- Urutan tampilan di galeri
+    year VARCHAR(10) NOT NULL,      -- Tahun (misal: "2025")
+    description TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
-### F. Articles Table (`articles`)
+### D. Activities Table (`activities`)
+Menyimpan entri alur waktu (*timeline entries*).
+```sql
+CREATE TABLE activities (
+    id SERIAL PRIMARY KEY,
+    profile_id INT REFERENCES profile(id) ON DELETE CASCADE,
+    title VARCHAR(150) NOT NULL,
+    date DATE NOT NULL,             -- Tanggal entri
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### E. Projects Table (`projects`)
+Menyimpan proyek yang dikerjakan Rifqi. Gambar galeri dan tautan eksternal bersifat opsional.
+```sql
+-- Mendefinisikan type enum untuk kategori proyek
+CREATE TYPE project_type AS ENUM (
+    'software', 
+    'research', 
+    'academic', 
+    'photography', 
+    'video', 
+    'creative', 
+    'other'
+);
+
+CREATE TABLE projects (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    slug VARCHAR(150) UNIQUE NOT NULL,
+    type project_type NOT NULL,
+    description TEXT NOT NULL,     -- Deskripsi pendek kartu proyek
+    content TEXT NOT NULL,         -- Cerita detail (format markdown)
+    cover_image VARCHAR(255) NOT NULL, -- Path sampul utama
+    gallery_images TEXT[],         -- Array path file gambar pendukung (Opsional)
+    external_links JSONB,          -- Link GitHub, Demo, dll (Opsional)
+    status VARCHAR(20) DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### F. Albums Table (`albums`)
+Koleksi visual tematik yang memiliki lokasi, tanggal, dan cerita (*story*).
+```sql
+CREATE TABLE albums (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    slug VARCHAR(150) UNIQUE NOT NULL,
+    location VARCHAR(150) NOT NULL, -- Lokasi pengambilan karya
+    date VARCHAR(50) NOT NULL,      -- Tanggal/Bulan karya (misal: "Juni 2026")
+    story TEXT NOT NULL,           -- Cerita di balik album (first-class field)
+    cover_image VARCHAR(255) NOT NULL,
+    status VARCHAR(20) DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### G. Album Photos Table (`album_photos`)
+Menyimpan foto spesifik milik suatu album.
+```sql
+CREATE TABLE album_photos (
+    id SERIAL PRIMARY KEY,
+    album_id INT REFERENCES albums(id) ON DELETE CASCADE,
+    file_url VARCHAR(255) NOT NULL,
+    caption TEXT,                  -- Deskripsi pendek foto
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### H. Album Videos Table (`album_videos`)
+Menyimpan video spesifik milik suatu album yang ditautkan ke media luar.
+```sql
+CREATE TABLE album_videos (
+    id SERIAL PRIMARY KEY,
+    album_id INT REFERENCES albums(id) ON DELETE CASCADE,
+    file_url VARCHAR(255) NOT NULL, -- Thumbnail/cover video lokal
+    video_url VARCHAR(255) NOT NULL, -- Tautan youtube/vimeo eksternal
+    caption TEXT,                  -- Deskripsi pendek video
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### I. Articles Table (`articles`)
 Menyimpan tulisan, artikel, dan refleksi.
 ```sql
 CREATE TABLE articles (
@@ -121,8 +178,8 @@ CREATE TABLE articles (
     slug VARCHAR(200) UNIQUE NOT NULL,
     content TEXT NOT NULL,         -- Konten artikel (format markdown)
     category VARCHAR(50),          -- Kategori tulisan (e.g. 'Refleksi', 'Opini')
-    status VARCHAR(20) DEFAULT 'draft', -- 'draft' atau 'published'
-    published_at TIMESTAMP WITH TIME ZONE, -- Waktu terbit resmi
+    status VARCHAR(20) DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+    published_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -132,10 +189,11 @@ CREATE TABLE articles (
 
 ## 3. Database Indexes & Optimizations
 
-Untuk mempercepat query pencarian berdasarkan slug (yang digunakan pada URL halaman detail):
+Untuk mempercepat query pencarian data:
 ```sql
 CREATE INDEX idx_projects_slug ON projects(slug);
-CREATE INDEX idx_media_albums_slug ON media_albums(slug);
+CREATE INDEX idx_albums_slug ON albums(slug);
 CREATE INDEX idx_articles_slug ON articles(slug);
-CREATE INDEX idx_media_items_album ON media_items(album_id);
+CREATE INDEX idx_album_photos_album ON album_photos(album_id);
+CREATE INDEX idx_album_videos_album ON album_videos(album_id);
 ```

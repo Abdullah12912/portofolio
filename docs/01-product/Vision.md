@@ -14,44 +14,88 @@
 
 ## Content Priorities
 
-### 1. Student (Identitas Utama)
-Menjawab pertanyaan: *"Mahasiswa seperti apa Rifqi?"*
-* **Profil Diri**: Siapa saya, minat utama, dan apa yang sedang dikerjakan saat ini.
-* **Akademik & Organisasi**: Riwayat pendidikan, keterlibatan organisasi, dan peran aktif di dalamnya.
-* **Pencapaian**: Kompetisi, beasiswa, penghargaan, sertifikasi.
+### 1. Profile / Current
+Menjawab pertanyaan: *"Mahasiswa seperti apa Rifqi saat ini?"*
+* **Profil Diri**: Siapa saya, minat utama, dan status aktivitas terkini.
+* **Current Status**: Apa yang sedang dikerjakan secara aktif sekarang (misal: "Menyusun proposal Tugas Akhir").
 * **Kompetensi**: Daftar keterampilan dan bidang keahlian (soft skills & hard skills).
 
-### 2. Photography & Videography (Dokumentasi Karya Visual)
+### 2. Achievements (Milestones)
+Penghargaan, prestasi akademis, sertifikasi, atau beasiswa.
+* **Akademik**: Indeks Prestasi Kumulatif (IPK) terpilih atau penghargaan dari kampus.
+* **Kompetisi**: Penghargaan lomba tingkat regional, nasional, maupun internasional.
+
+### 3. Activities (Timeline Entries)
+Catatan harian, keterlibatan kepanitiaan/organisasi, seminar, workshop, kunjungan, atau pembaruan proyek.
+* **Keterlibatan**: Keanggotaan organisasi, kepanitiaan event.
+* **Timeline**: Aktivitas singkat seperti menghadiri pelatihan, peluncuran portofolio, dll.
+
+### 4. Photography & Videography (Dokumentasi Karya Visual)
 Bukan sekadar galeri biasa, melainkan media bercerita.
 * **Album**: Kumpulan karya foto tematik.
-* **Cerita (Stories)**: Narasi di balik foto, proses kreatif, dan Behind The Scenes (BTS).
+* **Cerita (Stories)**: Narasi di balik foto, lokasi, tanggal pengambilan, proses kreatif, dan Behind The Scenes (BTS).
 * **Video**: Dokumentasi video, sinematografi, atau dokumenter pendek.
 
-### 3. Projects (Project ≠ Coding)
+### 5. Projects (Project ≠ Coding)
 Semua jenis proyek yang pernah diinisiasi atau diikuti:
-* **Digital/Website**: Proyek pengembangan perangkat lunak (jika ada).
-* **Penelitian & Proposal**: Karya ilmiah, riset akademis, program kreativitas mahasiswa, dll.
-* **Video Documentary**: Karya dokumentasi video.
-* **Event**: Keterlibatan dalam kepanitiaan, festival, pameran, atau program sosial.
+* **Web/Software**: Proyek pengembangan perangkat lunak (jika ada).
+* **Riset & Akademis**: Karya ilmiah, proposal penelitian, jurnal.
+* **Desain & Kreatif**: Desain visual, video dokumenter, kepanitiaan event.
 
-### 4. Writing (Refleksi & Pemikiran)
+### 6. Writing (Refleksi & Pemikiran)
 Catatan tertulis untuk menunjukkan kedalaman berpikir:
-* **Artikel**: Opini, ulasan topik tertentu, tutorial.
-* **Refleksi**: Catatan harian pembelajaran, evaluasi diri, dan cerita perjalanan hidup.
+* **Artikel & Refleksi**: Opini, ulasan topik tertentu, catatan harian pembelajaran.
 
 ---
 
-## Out of Scope (Yang Tidak Dibangun)
-Untuk menjaga fokus produk, fitur-fitur berikut **tidak akan dibangun** pada versi pertama:
-* **Kecerdasan Buatan (AI)** / Integrasi LLM / Chatbot.
-* **Knowledge Graph** / Visualisasi Catatan Saling Terhubung.
-* **PKP / Second Brain** (Sistem manajemen pengetahuan personal yang kompleks).
-* **Workflow Engine** (Sistem otomatisasi alur kerja).
-* **Multi-user** / Role Management (Hanya ada single admin: Rifqi).
-* **Notification System** (Real-time notifications, email newsletters).
-* **Recommendation Engine** (Rekomendasi konten berbasis AI).
-* **Gamification** (Points, badges, leaderboard).
-* **Complex Dashboard Analytics** (Grafik analitik lalu lintas data yang rumit).
+## Out of Scope & MVP Boundaries
+
+### CTO Decision #006 — MVP Boundary
+**Status:** APPROVED & FROZEN
+
+Untuk menjaga fokus produk, ruang lingkup versi pertama dibatasi secara ketat. MVP **tidak boleh** memuat fitur berikut:
+* **Search**: Pencarian teks penuh pada situs.
+* **Tags & Categories with Nesting**: Pengelompokan yang bertingkat atau tag bebas.
+* **Likes & Comments**: Sistem interaksi sosial atau umpan balik publik.
+* **View Counters & Analytics**: Penghitung jumlah tayang halaman atau dashboard grafik analitik.
+* **RSS Feed**: Fitur sindikasi konten.
+* **Multi-language Support**: Penyediaan konten dalam banyak bahasa (situs hanya akan menggunakan Bahasa Indonesia/Inggris secara statis).
+* **AI-generated Content**: Integrasi kecerdasan buatan, chatbot, atau pembuat teks otomatis.
+* **Rich Permission Systems**: Autentikasi multi-user (hanya ada single admin: Rifqi).
+* **Notifications**: Notifikasi email, newsletter, atau push notifications.
+* **Scheduling Posts**: Penjadwalan penerbitan konten secara otomatis di masa depan.
+* **Draft Approval Workflows**: Alur kerja peninjauan konten sebelum dipublikasikan.
+
+---
+
+## CTO Decisions on Governance
+
+### CTO Decision #005 — Documentation Hierarchy
+**Status:** APPROVED & FROZEN
+
+Dokumentasi proyek memiliki urutan otoritas sebagai berikut:
+```
+Vision.md
+        │
+        ▼
+Sitemap.md
+        │
+        ▼
+Content Model.md
+        │
+        ▼
+Architecture.md
+        │
+        ▼
+Database.md
+        │
+        ▼
+API.md
+        │
+        ▼
+Implementation Sprints
+```
+Dokumen di tingkat bawah **tidak boleh bertentangan** dengan dokumen di tingkat atas. Setiap perubahan fitur baru harus terlebih dahulu dicatatkan di tingkat atas sebelum dilakukan implementasi kode.
 
 ---
 
@@ -64,7 +108,7 @@ Desain UI bertujuan untuk mempermudah membaca dan menikmati konten. Tidak boleh 
 Foto dan visual disajikan dalam ukuran besar. Pemanfaatan *whitespace* (jarak antar elemen) yang luas untuk memberikan ruang bernapas pada visual.
 
 ### Principle 3: Story First
-Setiap karya, foto, atau proyek harus memiliki cerita di baliknya. Tidak hanya menampilkan hasil akhir, melainkan juga proses dan pembelajaran.
+Setiap karya, foto, atau proyek harus memiliki cerita di baliknya. Tidak hanya menampilkan hasil akhir, melainkan juga proses, lokasi, tanggal, dan pembelajaran.
 
 ### Principle 4: Simple Admin
 Dashboard CMS harus sangat sederhana dan to-the-point. Sekali klik untuk mempublikasikan konten.
