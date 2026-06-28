@@ -1,8 +1,12 @@
 import 'dotenv/config';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import db from './config/db.js';
+
+import authRouter from './routes/auth.js';
+import errorMiddleware from './middleware/error.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,16 +14,27 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Body & cookie parsers
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 // Serve the public website static files
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Serve the admin CMS static files under /admin
 app.use('/admin', express.static(path.join(__dirname, '../admin')));
 
+// API Routes
+app.use('/api/auth', authRouter);
+
 // Fallback: any unmatched route serves the public index
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
+
+// Centralized error handler
+app.use(errorMiddleware);
 
 // Verify DB connection and start server
 async function startServer() {
