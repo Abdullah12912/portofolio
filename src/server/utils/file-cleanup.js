@@ -19,17 +19,23 @@ export const deleteUploadFile = (filePathOrUrl) => {
   try {
     let absolutePath;
 
-    if (path.isAbsolute(filePathOrUrl)) {
+    // On Windows, a path starting with '/' (e.g. '/uploads/...') returns true for path.isAbsolute.
+    // We treat it as a web URL if it starts with '/' to resolve it correctly inside the public folder.
+    if (path.isAbsolute(filePathOrUrl) && !filePathOrUrl.startsWith('/')) {
       absolutePath = path.resolve(filePathOrUrl);
     } else {
-      // Convert web URL to absolute path
+      // Convert web URL to absolute path relative to public directory
       const normalizedUrl = filePathOrUrl.startsWith('/') ? filePathOrUrl.substring(1) : filePathOrUrl;
       absolutePath = path.resolve(__dirname, '../../public', normalizedUrl);
     }
 
+    // Standardize paths (lowercase and standard resolve) for safe OS comparison
+    const resolvedPath = path.normalize(absolutePath).toLowerCase();
+    const resolvedBase = path.normalize(UPLOADS_BASE_PATH).toLowerCase();
+
     // Security check: Must reside within UPLOADS_BASE_PATH
-    if (!absolutePath.startsWith(UPLOADS_BASE_PATH)) {
-      console.warn(`⚠️ Security Block: Attempted file deletion outside uploads directory: ${filePathOrUrl}`);
+    if (!resolvedPath.startsWith(resolvedBase)) {
+      console.warn(`⚠️ Security Block: Attempted file deletion outside uploads directory:\nResolved Path: ${resolvedPath}\nBase Path: ${resolvedBase}`);
       return;
     }
 
