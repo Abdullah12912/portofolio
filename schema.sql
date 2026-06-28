@@ -213,7 +213,7 @@ CREATE INDEX idx_activities_profile   ON activities(profile_id);
 INSERT INTO admins (username, password_hash)
 VALUES (
     'rifqi_admin',
-    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LeAFVXUuS1Lp1RFdi'
+    '$2a$12$hD/FoGgOQBIbYo61J1DB0OelUHdDaX9nLcEAGnB9RYyoK63eD8IHG'
 );
 
 -- Default profile row (singleton — always ID 1)
