@@ -1,5 +1,4 @@
 import { validateRequired, validateSlug, validateProjectType, validateUrl } from './helpers.js';
-import { deleteUploadFile } from '../utils/file-cleanup.js';
 import AppError from '../utils/app-error.js';
 
 export const validateCreateProject = (req, res, next) => {
@@ -37,10 +36,6 @@ export const validateCreateProject = (req, res, next) => {
 
     next();
   } catch (err) {
-    // Clean up uploaded file if validation fails to prevent orphaned file
-    if (req.file) {
-      deleteUploadFile(`/uploads/projects/${req.file.filename}`);
-    }
     next(err);
   }
 };
@@ -82,10 +77,6 @@ export const validateUpdateProject = (req, res, next) => {
 
     next();
   } catch (err) {
-    // Clean up uploaded file if validation fails to prevent orphaned file
-    if (req.file) {
-      deleteUploadFile(`/uploads/projects/${req.file.filename}`);
-    }
     next(err);
   }
 };

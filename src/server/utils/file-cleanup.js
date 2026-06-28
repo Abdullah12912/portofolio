@@ -10,20 +10,26 @@ const UPLOADS_BASE_PATH = path.resolve(__dirname, '../../public/uploads');
 
 /**
  * Safely deletes a file from the uploads directory.
- * Prevents directory traversal attacks by validating that the file path resolves
- * within the absolute uploads directory.
+ * Accepts either a relative web URL (e.g. '/uploads/projects/file.jpg')
+ * or an absolute filesystem path.
  */
-export const deleteUploadFile = (fileUrl) => {
-  if (!fileUrl) return;
+export const deleteUploadFile = (filePathOrUrl) => {
+  if (!filePathOrUrl) return;
 
   try {
-    // Convert web URL (e.g. /uploads/projects/file.jpg) to absolute filesystem path
-    const normalizedUrl = fileUrl.startsWith('/') ? fileUrl.substring(1) : fileUrl;
-    const absolutePath = path.resolve(__dirname, '../../public', normalizedUrl);
+    let absolutePath;
+
+    if (path.isAbsolute(filePathOrUrl)) {
+      absolutePath = path.resolve(filePathOrUrl);
+    } else {
+      // Convert web URL to absolute path
+      const normalizedUrl = filePathOrUrl.startsWith('/') ? filePathOrUrl.substring(1) : filePathOrUrl;
+      absolutePath = path.resolve(__dirname, '../../public', normalizedUrl);
+    }
 
     // Security check: Must reside within UPLOADS_BASE_PATH
     if (!absolutePath.startsWith(UPLOADS_BASE_PATH)) {
-      console.warn(`⚠️ Security Block: Attempted file deletion outside uploads directory: ${fileUrl}`);
+      console.warn(`⚠️ Security Block: Attempted file deletion outside uploads directory: ${filePathOrUrl}`);
       return;
     }
 
@@ -34,6 +40,19 @@ export const deleteUploadFile = (fileUrl) => {
       console.log(`ℹ File not found on disk: ${absolutePath}`);
     }
   } catch (err) {
-    console.error(`💥 Failed to delete file ${fileUrl}:`, err.message);
+    console.error(`💥 Failed to delete file ${filePathOrUrl}:`, err.message);
+  }
+};
+
+/**
+ * Safely deletes multiple files from the uploads directory.
+ */
+export const deleteUploadFiles = (files) => {
+  if (!files) return;
+
+  if (Array.isArray(files)) {
+    files.forEach(file => deleteUploadFile(file));
+  } else {
+    deleteUploadFile(files);
   }
 };

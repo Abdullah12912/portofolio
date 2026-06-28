@@ -60,10 +60,6 @@ export const createProject = async (req, res, next) => {
       data: project,
     });
   } catch (err) {
-    // If db insert failed but we uploaded file, delete file immediately
-    if (req.file) {
-      deleteUploadFile(`/uploads/projects/${req.file.filename}`);
-    }
     next(err);
   }
 };
@@ -72,7 +68,6 @@ export const updateProject = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    // Retrieve current project details first to check ownership and access cover image
     const existing = await projectsService.getProjectById(id);
 
     let coverImage = existing.cover_image;
@@ -91,7 +86,7 @@ export const updateProject = async (req, res, next) => {
 
     const updated = await projectsService.updateProject(id, updateData);
 
-    // Enforce CTO Decision #025: Delete old file from disk upon successful replacement
+    // If update succeeds and we replaced the cover, delete the old cover file
     if (oldCoverToDelete) {
       deleteUploadFile(oldCoverToDelete);
     }
@@ -102,10 +97,6 @@ export const updateProject = async (req, res, next) => {
       data: updated,
     });
   } catch (err) {
-    // If update failed but we uploaded new file, delete new file immediately to prevent orphan
-    if (req.file) {
-      deleteUploadFile(`/uploads/projects/${req.file.filename}`);
-    }
     next(err);
   }
 };
@@ -117,7 +108,7 @@ export const deleteProject = async (req, res, next) => {
     // Delete project from database and retrieve cover/gallery file paths
     const deleted = await projectsService.deleteProject(id);
 
-    // Enforce CTO Decision #025: Delete associated image assets from disk
+    // Delete associated image assets from disk
     deleteUploadFile(deleted.cover_image);
 
     if (deleted.gallery_images && Array.isArray(deleted.gallery_images)) {
